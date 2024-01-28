@@ -24,7 +24,7 @@ WORKDIR /swaphub
 RUN mkdir /swaphub/static && mkdir /swaphub/media && chown -R shex:shex /swaphub && chmod 755 /swaphub
 
 ## Copy project files to image
-COPY --chown=shex:shex . .
+COPY --chown=shex:shex ../ .
 
 ## Install libs
 RUN pip install -r requirements.txt
@@ -37,4 +37,4 @@ USER shex
 # CMD gunicorn swaphub.config.wsgi:application
 
 # CMD python .\swaphub\manage.py runserver 0.0.0.0:8000
-CMD ["python", "./swaphub/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
