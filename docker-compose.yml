@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres:15
+    container_name: swaphub-database
+    ports:
+     - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file: 
+      - .env
+  dev-server:
+    image: nobilitat/swaphub-dev-server:latest
+    container_name: dev-server
+    ports:
+     - "8000:8000"
+    depends_on:
+      - database
+    volumes:
+      - static_volume:/swaphub/static
+      - media_volume:/swapub/media
+    env_file: 
+      - .env
+
+volumes:
+  static_volume:
+  media_volume:
+  pgdata:
