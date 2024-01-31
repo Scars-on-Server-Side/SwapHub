@@ -30,7 +30,7 @@ services:
     networks:
       - swaphub-network
     environment:
-      - DJANGO_SETTINGS_MODULE=swaphub.settings
+      - DJANGO_SETTINGS_MODULE=backend.settings
   
   frontend:
     container_name: frontend
