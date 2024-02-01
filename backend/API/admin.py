@@ -1,3 +1,14 @@
 from django.contrib import admin
+from .models import *
 
+admin.site.register(Category)
+admin.site.register(Thing)
 
+admin.site.register(Location)
+admin.site.register(UserProfile)
+
+admin.site.register(Dialog)
+admin.site.register(Message)
+
+admin.site.register(Feedback)
+admin.site.register(Trade)
