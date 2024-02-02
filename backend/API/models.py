@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    
+    def __str__(self):
+        return self.name
 
 
 class Thing(models.Model):
@@ -16,12 +19,18 @@ class Thing(models.Model):
         blank=True,
     )
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    images = models.ImageField(upload_to="../media/images")
+    images = models.ImageField(upload_to="../media/images", null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Location(models.Model):
     country = models.CharField(max_length=150)
     city = models.CharField(max_length=175)
+
+    def __str__(self):
+        return self.country
 
 
 class UserProfile(models.Model):
@@ -45,12 +54,8 @@ class Message(models.Model):
     text = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
 
-
-class Feedback(models.Model):
-    text = models.TextField()
-    rating = models.IntegerField(null=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    user_side = models.TextField()
+    def __str__(self):
+        return self.text
 
 
 class Trade(models.Model):
@@ -63,4 +68,14 @@ class Trade(models.Model):
     )
     created_on = models.DateTimeField(auto_now_add=True)
     closed_on = models.DateTimeField()
-    feedback_id = models.ForeignKey(Feedback, on_delete=models.CASCADE)
+
+
+class Feedback(models.Model):
+    text = models.TextField()
+    rating = models.IntegerField(null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    user_side = models.TextField()
+    trade_id = models.ForeignKey(Trade, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.text
