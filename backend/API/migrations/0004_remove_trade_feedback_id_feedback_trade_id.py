@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('API', '0003_alter_thing_images'),
+        ('api', '0003_alter_thing_images'),
     ]
 
     operations = [
@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='feedback',
             name='trade_id',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='API.trade'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='api.trade'),
         ),
     ]

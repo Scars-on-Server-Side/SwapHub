@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework import routers
-from API.views import *
+from api.views import *
 
 
 router = routers.SimpleRouter()
