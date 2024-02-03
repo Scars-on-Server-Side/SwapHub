@@ -2,14 +2,67 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+class Country(models.Model):
+
+    name = models.CharField(max_length=100)
     
-    def __str__(self):
+
+class Region(models.Model):
+
+    name = models.CharField(max_length=250)
+    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+
+class City(models.Model):
+
+    name = models.CharField(max_length=100)
+    region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+
+class Location(models.Model):
+
+    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    # Необходимо, чтобы после выбора страны были доступны только ее регионы
+    region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
+    # Также и с городами
+    city_id = models.ForeignKey(City, on_delete=models.CASCADE)
+
+    def __str__(self) -> int:
+        return self.country_id
+
+
+class UserProfile(models.Model):
+    '''
+    Override base class User
+    '''
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    location_id = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+
+
+class Category(models.Model):
+    '''
+    Things categories
+    parent_id - common name of things
+    '''
+
+    parent_id = models.IntegerField(default=0)
+    name = models.CharField(max_length=350, unique=True)
+    
+    def __str__(self) -> str:
         return self.name
 
 
+class ThingImage(models.Model):
+
+    name = models.CharField(max_length=200)
+    ## Скорректировать путь хранения 
+    image = models.ImageField(upload_to="../media/images")
+
+
 class Thing(models.Model):
+    
     name = models.CharField(max_length=100)
     description = models.TextField()
     category_id = models.ForeignKey(
@@ -19,46 +72,36 @@ class Thing(models.Model):
         blank=True,
     )
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    images = models.ImageField(upload_to="../media/images", null=True, blank=True)
+    images = models.ManyToManyField(ThingImage)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
-class Location(models.Model):
-    country = models.CharField(max_length=150)
-    city = models.CharField(max_length=175)
-
-    def __str__(self):
-        return self.country
-
-
-class UserProfile(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    location_id = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
-
-
 class Dialog(models.Model):
+
     user_A_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="dialog_user_A"
     )
     user_B_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="dialog_user_B"
     )
-    start_on = models.DateTimeField()
+    start_on = models.DateTimeField(auto_now_add=True)
 
 
 class Message(models.Model):
+
     dialog_id = models.ForeignKey(Dialog, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
 
 class Trade(models.Model):
+
     thing_id = models.ForeignKey(Thing, on_delete=models.CASCADE)
     participant_A_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="trade_user_A"
@@ -66,16 +109,17 @@ class Trade(models.Model):
     participant_B_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="trade_user_B"
     )
-    created_on = models.DateTimeField(auto_now_add=True)
-    closed_on = models.DateTimeField()
+    created_on = models.DateTimeField(auto_now_add=True)    
+    closed_on = models.DateTimeField(blank=True, null=True)
 
 
 class Feedback(models.Model):
+
     text = models.TextField()
     rating = models.IntegerField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     user_side = models.TextField()
-    trade_id = models.ForeignKey(Trade, on_delete=models.CASCADE, default=1)
+    trade_id = models.ForeignKey(Trade, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
