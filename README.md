@@ -6,4 +6,6 @@ SwapHub - обменник вещей между двумя сторонами.
 * Django REST
 * Bootstrap 5
 * React
-* PostgreSql
+* PostgreSQL
+* Gunicorn
+* Nginx
