@@ -5,12 +5,18 @@ from django.contrib.auth.models import User
 class Country(models.Model):
 
     name = models.CharField(max_length=100)
-    
+
+    def __str__(self):
+        return self.name
+
 
 class Region(models.Model):
 
     name = models.CharField(max_length=250)
     country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class City(models.Model):
@@ -18,26 +24,29 @@ class City(models.Model):
     name = models.CharField(max_length=100)
     region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Location(models.Model):
 
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country_id = models.ForeignKey(Country, on_delete=models.CASCADE, default=None)
 
     # Необходимо, чтобы после выбора страны были доступны только ее регионы
-    region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
+    region_id = models.ForeignKey(Region, on_delete=models.CASCADE, default=None)
     # Также и с городами
-    city_id = models.ForeignKey(City, on_delete=models.CASCADE)
+    city_id = models.ForeignKey(City, on_delete=models.CASCADE, default=None)
 
     def __str__(self) -> int:
-        return self.country_id
+        return str(self.country_id.id)
 
 
 class UserProfile(models.Model):
     '''
     Override base class User
     '''
-    
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
     location_id = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
 
 
@@ -57,8 +66,11 @@ class Category(models.Model):
 class ThingImage(models.Model):
 
     name = models.CharField(max_length=200)
-    ## Скорректировать путь хранения 
-    image = models.ImageField(upload_to="../media/images")
+
+    image = models.ImageField(upload_to="images")
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Thing(models.Model):
@@ -118,7 +130,6 @@ class Feedback(models.Model):
     text = models.TextField()
     rating = models.IntegerField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    user_side = models.TextField()
     trade_id = models.ForeignKey(Trade, on_delete=models.CASCADE)
 
     def __str__(self) -> str:

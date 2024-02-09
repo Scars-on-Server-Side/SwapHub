@@ -1,3 +1,5 @@
 __pycache__/
 venv/
 .DS_Store
+static/admin
+static/rest_framework
