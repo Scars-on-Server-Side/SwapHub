@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import *
-from .serializers import *
+from apps.main.models import *
+from apps.main.serializers import *
 from rest_framework import viewsets
 
 

@@ -5,7 +5,7 @@ services:
     image: postgres:15
     container_name: swaphub-database
     ports:
-      - 5432:5432
+      - 5436:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     env_file: 
@@ -30,7 +30,7 @@ services:
     networks:
       - swaphub-network
     environment:
-      - DJANGO_SETTINGS_MODULE=backend.settings
+      - DJANGO_SETTINGS_MODULE=config.settings
   
   frontend:
     container_name: frontend
