@@ -12,3 +12,9 @@ admin.site.register(Message)
 
 admin.site.register(Feedback)
 admin.site.register(Trade)
+
+admin.site.register(Country)
+admin.site.register(Region)
+admin.site.register(City)
+
+admin.site.register(ThingImage)
