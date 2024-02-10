@@ -32,6 +32,13 @@ router.register(r"message", MessageViewSet)
 router.register(r"trade", TradeViewSet)
 router.register(r"feedback", FeedbackViewSet)
 
+router.register(r"country", CountryViewSet)
+router.register(r"region", RegionViewSet)
+router.register(r"city", CityViewSet)
+router.register(r"thingimage", ThingImageViewSet)
+
+
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),

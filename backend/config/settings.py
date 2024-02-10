@@ -147,14 +147,24 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOWED_ORIGINS = [
+""" CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  
     "http://localhost:8000",
     "http://localhost:80",
-    
+
     "http://0.0.0.0:3000",
     "http://0.0.0.0:8000",
     "http://0.0.0.0:80",
-] 
+] """
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOW_ALL_ORIGINS = ["*"]
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = None
+
+SESSION_COOKIE_SAMESITE = None
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_NAME = "sessionid"

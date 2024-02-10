@@ -12,7 +12,7 @@ function App() {
 
   const fetchThings = async () => {
     await axios
-      .get("http://localhost:80/api/v1/thing", {
+      .get("http://localhost:80/api/v1/thing/", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -21,7 +21,7 @@ function App() {
         setThings(response.data);
       })
       .catch((error) => {
-        alert(error.message);
+        console.error(error);
       });
   };
 
