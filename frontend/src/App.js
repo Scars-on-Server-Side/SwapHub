@@ -10,6 +10,7 @@ function App() {
   const [startThings, setStartThings] = useState([{}]);
   const [things, setThings] = useState([{}]);
 
+
   const fetchThings = async () => {
     await axios
       .get("http://localhost:80/api/v1/thing/", {
@@ -19,24 +20,15 @@ function App() {
       })
       .then((response) => {
         setThings(response.data);
+        setStartThings(response.data.slice(-6));
       })
       .catch((error) => {
         console.error(error);
       });
   };
-
+  
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchThings();
-      console.log(data);
-      if (data !== null && data !== undefined) {
-        setThings(data);
-        setStartThings(data.slice(-6));
-        console.log(data);
-      }
-    };
-
-    fetchData();
+    fetchThings();
   }, []);
 
   const handleClickAvatar = () => {

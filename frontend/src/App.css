@@ -23,3 +23,7 @@ h1 {
 .Hub {
   color: #1F86FF;
 }
+
+.StartItem {
+  list-style: none;
+}

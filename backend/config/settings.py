@@ -160,11 +160,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 
 # CORS_ALLOW_ALL_ORIGINS = ["*"]
-
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = None
-
-SESSION_COOKIE_SAMESITE = None
-SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_NAME = "sessionid"

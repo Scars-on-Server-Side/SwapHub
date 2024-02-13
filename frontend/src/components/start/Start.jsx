@@ -5,11 +5,11 @@ function Start(props) {
     const startThings = props.startThings
 
     return (
-        <div className="Start">
-            {startThings.map((thing) => (
-                <StartThing key={thing.id} img={thing.img} name={thing.name} />
+        <ul className="Start row row-cols-1 row-cols-md-3 g-4 m-3">
+            {startThings.map((thing, index) => (
+                <StartThing key={index} img={thing.img} name={thing.name} />
             ))}
-        </div>
+        </ul>
     )
 }
 
