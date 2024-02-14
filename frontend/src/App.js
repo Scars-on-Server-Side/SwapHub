@@ -24,11 +24,33 @@ function App() {
       })
       .catch((error) => {
         console.error(error);
+        console.log(things + "things");
+        console.log(startThings + "startThings");
       });
   };
+
+  const fetchThingsImages = (thing) => { 
+    let images = [];
+    thing.images.forEach(id => {
+      axios
+        .get(`http://localhost:80/api/v1/thingimage/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          images.push(response.data.image);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+    console.log(images);
+  }
   
   useEffect(() => {
     fetchThings();
+    fetchThingsImages();
   }, []);
 
   const handleClickAvatar = () => {
