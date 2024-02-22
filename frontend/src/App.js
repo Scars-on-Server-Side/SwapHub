@@ -30,47 +30,18 @@ function App() {
       });
   };
 
-  // Function to fetch images for each thing
-  const fetchThingsImages = async () => {
-    const imagesPromises = startThings.map(async (thing) => {
-      if (thing.images) {
-        const imagePromises = thing.images.map(async (id) => {
-          try {
-            const response = await axios.get(
-              `http://localhost:80/api/v1/thingimage/${id}`,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            return response.data.image; // Assume this is the image URL
-          } catch (error) {
-            console.error(error);
-            return null;
-          }
-        });
-        const images = await Promise.all(imagePromises);
-        return { ...thing, images };
-      } else {
-        return thing;
-      }
-    });
-
-    const updatedStartThings = await Promise.all(imagesPromises);
-    setStartThings(updatedStartThings);
-    console.log(updatedStartThings + "fetchThingsImages");
-  };
-
-  // Fetch things and images when component mounts
+  // Fetch things when component mounts
   useEffect(() => {
     fetchThings();
-    fetchThingsImages();
-  }, []);
+  });
 
   // Function to handle avatar click
   const handleClickAvatar = () => {
     alert("Avatar clicked");
+    console.log(things);
+    console.log(startThings);
+    console.log(things[0]);
+    console.log(startThings[0]);
   };
 
   // Render Header and Start components with props
