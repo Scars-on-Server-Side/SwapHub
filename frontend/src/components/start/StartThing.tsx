@@ -1,3 +1,5 @@
+import React from "react";
+
 function StartThing(props) {
     const { img, name } = props;
 

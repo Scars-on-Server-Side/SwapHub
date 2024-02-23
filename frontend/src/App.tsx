@@ -1,6 +1,7 @@
+import React from "react";
 import "./App.css";
-import Header from "./components/header/Header.jsx";
-import Start from "./components/start/Start.jsx";
+import Header from "./components/header/Header.tsx";
+import Start from "./components/start/Start.tsx";
 
 import axios from "axios";
 import { useState, useEffect } from "react";

@@ -1,5 +1,6 @@
-import StartThing from "./StartThing";
+import StartThing from "./StartThing.tsx";
 import axios from "axios";
+import React from "react";
 import { useEffect, useState } from "react";
 
 function Start(props) {
