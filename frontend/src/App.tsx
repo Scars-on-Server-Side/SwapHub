@@ -34,7 +34,7 @@ function App() {
   // Fetch things when component mounts
   useEffect(() => {
     fetchThings();
-  });
+  }, []);
 
   // Function to handle avatar click
   const handleClickAvatar = () => {

@@ -67,9 +67,3 @@ class CitySerializer(serializers.ModelSerializer):
         model = City
         fields = "__all__"
 
-
-class ThingImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ThingImage
-        fields = "__all__"
-

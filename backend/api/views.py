@@ -57,8 +57,3 @@ class RegionViewSet(viewsets.ModelViewSet):
 class CityViewSet(viewsets.ModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
-
-
-class ThingImageViewSet(viewsets.ModelViewSet):
-    queryset = ThingImage.objects.all()
-    serializer_class = ThingImageSerializer

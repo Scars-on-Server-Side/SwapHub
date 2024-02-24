@@ -58,23 +58,23 @@ class Category(models.Model):
 
     parent_id = models.IntegerField(default=0)
     name = models.CharField(max_length=350, unique=True)
-    
+
     def __str__(self) -> str:
         return self.name
 
 
-class ThingImage(models.Model):
+""" class ThingImage(models.Model):
 
     name = models.CharField(max_length=200)
 
     image = models.ImageField(upload_to="images")
 
     def __str__(self) -> str:
-        return self.name
+        return self.name """
 
 
 class Thing(models.Model):
-    
+
     name = models.CharField(max_length=100)
     description = models.TextField()
     category_id = models.ForeignKey(
@@ -84,7 +84,7 @@ class Thing(models.Model):
         blank=True,
     )
     owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    images = models.ManyToManyField(ThingImage)
+    image = models.ImageField(upload_to="images", null=True)
 
     def __str__(self) -> str:
         return self.name
