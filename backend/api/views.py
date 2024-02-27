@@ -2,6 +2,8 @@ from django.shortcuts import render
 from apps.main.models import *
 from apps.main.serializers import *
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -12,6 +14,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ThingViewSet(viewsets.ModelViewSet):
     queryset = Thing.objects.all()
     serializer_class = ThingSerializer
+
+    @action(detail=False, methods=["get"])
+    def start(self, request):
+        # Получаем последние 6 вещей
+        latest_things = Thing.objects.all().order_by("-id")[:6]
+        serializer = self.get_serializer(latest_things, many=True)
+        return Response(serializer.data)
 
 
 class LocationViewSet(viewsets.ModelViewSet):
