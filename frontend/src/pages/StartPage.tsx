@@ -1,12 +1,12 @@
 import React from "react";
-import "./App.css";
+import "./StartPage.css";
 import Header from "./components/header/Header.tsx";
 import Start from "./components/start/Start.tsx";
 
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-function App() {
+function StartPage() {
   // Define state variables for startThings and things
   const [startThings, setStartThings] = useState([{}]);
   const [things, setThings] = useState([{}]);
@@ -47,11 +47,11 @@ function App() {
 
   // Render Header and Start components with props
   return (
-    <div className="App">
+    <div className="StartPage">
       <Header onClickAvatar={handleClickAvatar} />
       <Start startThings={startThings} />
     </div>
   );
 }
 
-export default App;
+export default StartPage;
