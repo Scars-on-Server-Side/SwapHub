@@ -35,6 +35,7 @@ router.register(r"feedback", FeedbackViewSet)
 router.register(r"country", CountryViewSet)
 router.register(r"region", RegionViewSet)
 router.register(r"city", CityViewSet)
+router.register(r"image", ImageViewSet)
 
 
 

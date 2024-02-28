@@ -22,6 +22,22 @@ class ThingViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(latest_things, many=True)
         return Response(serializer.data)
 
+    def set_image_from_request(self, thing):
+        image = self.request.data.get("images")
+        if image is not None:
+            thing.set_image(image)
+
+    def perform_create(self, serializer):
+        self.set_image_from_request(serializer.save())
+
+    def perform_update(self, serializer):
+        self.set_image_from_request(serializer.save())
+
+
+class ImageViewSet(viewsets.ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
 
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.all()
