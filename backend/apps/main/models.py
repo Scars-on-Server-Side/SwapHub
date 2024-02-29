@@ -33,23 +33,26 @@ class Category(models.Model):
 class Image(models.Model):
     local_url = models.ImageField(upload_to=upload_to, default="")
     url_to_upload = models.CharField(max_length=200, default="")
+    # created = models.DateTimeField(auto_now_add=True)
 
     @staticmethod
     def get_uuid_name_with_extension(image):
         # Генерируем уникальное имя для изображения с расширением
         ext = image.name.split(".")[-1]
+
         return f"{uuid.uuid4()}.{ext}"
 
     @staticmethod
-    def upload_image(owner, picture_type, image, base=""):
+    def upload_image(image_type, image, base=""): # owner
+
         image_name = Image.get_uuid_name_with_extension(image)
-        picture = Image.objects.create(
-            local_url=image,
-            url_to_upload=Uploader.get_path(
-                owner, picture_type, image_name, base_for_file=base
-            ),
+        picture = Image.objects.create(  # http://localhost/media/ub/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png -> http://localhost/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png
+            local_url=image,             # ub/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png -> thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png
+            url_to_upload=Uploader.get_path(  # /swaphub/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png -> http://localhost/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png
+                image_type, image_name, base_for_file=base
+            ),  # owner
         )
-        return picture
+        return picture 
 
     def delete(self, using=None, keep_parents=False):
         os.remove(self.url_to_upload)
@@ -73,14 +76,14 @@ class Thing(models.Model):
         return self.name
 
     def set_image(self, image):
-        if self.images is not None:
-            image_instance = Image.upload_image(
-                owner=self.owner,
-                image=image,
-                picture_type="thing",
-                base=self.id,
-            )
-            self.images = image_instance
+        image_instance = Image.upload_image(
+            #owner=self.owner.id,
+            image=image,
+            image_type="thing",
+            base=self.id,
+        )
+        self.images = image_instance
+
         self.save()
 
 

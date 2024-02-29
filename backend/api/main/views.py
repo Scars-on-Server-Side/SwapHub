@@ -36,7 +36,8 @@ class ThingViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def set_image_from_request(self, thing):
-        image = self.request.data.get("images")
+        image = self.request.data.get("imagess")
+        print(image)
         if image is not None:
             thing.set_image(image)
 
