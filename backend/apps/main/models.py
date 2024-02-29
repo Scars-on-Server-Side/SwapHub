@@ -43,7 +43,7 @@ class Country(models.Model):
 class Region(models.Model):
 
     name = models.CharField(max_length=250)
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -52,7 +52,7 @@ class Region(models.Model):
 class City(models.Model):
 
     name = models.CharField(max_length=100)
-    region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
