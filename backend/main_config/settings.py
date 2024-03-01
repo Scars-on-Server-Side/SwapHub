@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.main.apps.MainConfig",
     "apps.chat.apps.ChatConfig",
+    "apps.loc.apps.LocConfig",
     "rest_framework",
     "corsheaders",
 ]
@@ -91,13 +92,11 @@ WSGI_APPLICATION = "main_config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        # "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-        # "PORT": os.getenv("POSTGRES_PORT", 5432),
         "USER": os.getenv("POSTGRES_USER", "POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "123"),
         "NAME": os.getenv("POSTGRES_DB", "POSTGRES_DB"),
         "HOST": "database",  # Это должно быть имя службы PostgreSQL, определенной в Docker Compose
-        "PORT": "5432",
+        "PORT": os.getenv("POSTGRES_PORT", 5432),
     }
 }
 

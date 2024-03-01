@@ -1,7 +1,8 @@
+import os
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
-import os
+from apps.loc.models import Location
 
 from django.conf import settings
 
@@ -32,52 +33,16 @@ class Uploader:
         return os.getcwd() + "/" + filename
 
 
-class Country(models.Model):
-
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class Region(models.Model):
-
-    name = models.CharField(max_length=250)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class City(models.Model):
-
-    name = models.CharField(max_length=100)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class Location(models.Model):
-
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE, default=None)
-
-    # Необходимо, чтобы после выбора страны были доступны только ее регионы
-    region_id = models.ForeignKey(Region, on_delete=models.CASCADE, default=None)
-    # Также и с городами
-    city_id = models.ForeignKey(City, on_delete=models.CASCADE, default=None)
-
-    def __str__(self) -> int:
-        return str(self.country_id.id)
-
-
 class UserProfile(models.Model):
     '''
     Override base class User
     '''
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
-    location_id = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return str(self.user.username)
 
 
 class Category(models.Model):
@@ -85,7 +50,7 @@ class Category(models.Model):
     Things categories
     '''
 
-    # parent_id = models.IntegerField(default=0) ???
+    parent = models.IntegerField(default=0)
     name = models.CharField(max_length=350, unique=True)
 
     def __str__(self) -> str:
@@ -127,13 +92,13 @@ class Thing(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.TextField()
-    category_id = models.ForeignKey(
+    category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
-    owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     images = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
@@ -142,7 +107,7 @@ class Thing(models.Model):
     def set_image(self, image):
         if self.images is not None:
             image_instance = Image.upload_image(
-                owner=self.owner_id,
+                owner=self.owner,
                 image=image,
                 picture_type="thing",
                 base=self.id,
@@ -151,35 +116,13 @@ class Thing(models.Model):
         self.save()
 
 
-class Dialog(models.Model):
-
-    user_A_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="dialog_user_A"
-    )
-    user_B_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="dialog_user_B"
-    )
-    start_on = models.DateTimeField(auto_now_add=True)
-
-
-class Message(models.Model):
-
-    dialog_id = models.ForeignKey(Dialog, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self) -> str:
-        return self.text
-
-
 class Trade(models.Model):
 
-    thing_id = models.ForeignKey(Thing, on_delete=models.CASCADE)
-    participant_A_id = models.ForeignKey(
+    thing = models.ForeignKey(Thing, on_delete=models.CASCADE)
+    participant_A = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="trade_user_A"
     )
-    participant_B_id = models.ForeignKey(
+    participant_B = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="trade_user_B"
     )
     created_on = models.DateTimeField(auto_now_add=True)    
@@ -191,7 +134,7 @@ class Feedback(models.Model):
     text = models.TextField()
     rating = models.IntegerField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    trade_id = models.ForeignKey(Trade, on_delete=models.CASCADE)
+    trade = models.ForeignKey(Trade, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.text

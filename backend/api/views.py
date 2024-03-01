@@ -1,9 +1,13 @@
 from django.shortcuts import render
-from apps.main.models import *
-from apps.main.serializers import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from apps.main.serializers import *
+from apps.main.models import *
+from apps.chat.serializers import *
+from apps.chat.models import *
+from apps.loc.serializers import *
+from apps.loc.models import *
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
