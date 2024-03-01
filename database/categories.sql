@@ -1,3 +1,4 @@
+-- Время выполнения скрипта - 50 секунд
 
 INSERT INTO main_category VALUES (1, 0, 'Товары');
 INSERT INTO main_category VALUES (2, 0, 'Услуги');

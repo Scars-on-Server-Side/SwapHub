@@ -23,7 +23,7 @@ class Category(models.Model):
     '''
 
     parent = models.IntegerField(default=0)
-    name = models.CharField(max_length=350, unique=True)
+    name = models.CharField(max_length=350)
 
     def __str__(self) -> str:
         return self.name
