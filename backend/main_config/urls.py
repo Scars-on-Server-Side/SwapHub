@@ -18,7 +18,21 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework import routers
-from api.views import *
+
+from api.views import (
+    CategoryViewSet,
+    ThingViewSet,
+    LocationViewSet,
+    UserProfileViewSet,
+    DialogViewSet,
+    MessageViewSet,
+    TradeViewSet,
+    FeedbackViewSet,
+    CountryViewSet,
+    RegionViewSet,
+    CityViewSet,
+    ImageViewSet
+)
 
 
 router = routers.SimpleRouter()
@@ -36,8 +50,6 @@ router.register(r"country", CountryViewSet)
 router.register(r"region", RegionViewSet)
 router.register(r"city", CityViewSet)
 router.register(r"image", ImageViewSet)
-
-
 
 
 urlpatterns = [

@@ -20,5 +20,5 @@ class Message(models.Model):
     text = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.text

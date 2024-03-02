@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import *
+from .models import (
+    Category,
+    Thing,
+    Image,
+    UserProfile,
+    Trade,
+    Feedback,
+)
+
 
 admin.site.register(Category)
 admin.site.register(Thing)

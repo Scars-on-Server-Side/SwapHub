@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from apps.loc.models import Location
 from utils.image_upload import Uploader, upload_to
 
+
 class UserProfile(models.Model):
     '''
     Override base class User
@@ -25,7 +26,7 @@ class Category(models.Model):
     parent = models.IntegerField(default=0)
     name = models.CharField(max_length=350)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -68,7 +69,7 @@ class Thing(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     images = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
     def set_image(self, image):
@@ -92,7 +93,7 @@ class Trade(models.Model):
     participant_B = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="trade_user_B"
     )
-    created_on = models.DateTimeField(auto_now_add=True)    
+    created_on = models.DateTimeField(auto_now_add=True)
     closed_on = models.DateTimeField(blank=True, null=True)
 
 
@@ -103,5 +104,5 @@ class Feedback(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     trade = models.ForeignKey(Trade, on_delete=models.CASCADE)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.text

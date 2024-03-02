@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import *
+from .models import (
+    Category,
+    Thing,
+    Image,
+    UserProfile,
+    Trade,
+    Feedback,
+)
 
 
 class CategorySerializer(serializers.ModelSerializer):
