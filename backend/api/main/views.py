@@ -33,7 +33,47 @@ class ThingViewSet(viewsets.ModelViewSet):
         # Получаем последние 6 вещей
         latest_things = Thing.objects.all().order_by("-id")[:6]
         serializer = self.get_serializer(latest_things, many=True)
-        return Response(serializer.data)
+        data = serializer.data
+
+        # Обновляем ссылки на изображения
+        for thing_data in data:
+            images_data = []
+            images = thing_data.get("images")  # Получаем список изображений
+
+            if isinstance(images, list):  # Если это список изображений
+                for image_id in images:
+                    image = Image.objects.get(pk=image_id)
+                    images_data.append(image.local_url.url)
+                thing_data["images"] = images_data  # Обновляем ссылки на изображения
+            else:  # Если это одиночное изображение
+                if images is not None:
+                    image = Image.objects.get(pk=images)
+                    thing_data["images"] = image.local_url.url
+
+        return Response(data)
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+
+        # Обновляем ссылки на изображения
+        for thing_data in data:
+            images_data = []
+            images = thing_data.get("images")  # Получаем список изображений
+
+            if isinstance(images, list):  # Если это список изображений
+                for image_id in images:
+                    image = Image.objects.get(pk=image_id)
+                    images_data.append(image.local_url.url)
+                thing_data["images"] = images_data  # Обновляем ссылки на изображения
+            else:  # Если это одиночное изображение
+                if images is not None:
+                    image = Image.objects.get(pk=images)
+                    thing_data["images"] = image.local_url.url
+
+        return Response(data)
 
     def set_image_from_request(self, thing):
         image = self.request.data.get("imagess")

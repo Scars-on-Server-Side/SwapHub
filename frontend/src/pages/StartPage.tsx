@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 function StartPage() {
   // Define state variables for startThings and things
   const [startThings, setStartThings] = useState([{}]);
+  const host = "http://localhost";
 
   // Function to fetch things data from the API
   const fetchStartThings = async () => {
@@ -41,7 +42,7 @@ function StartPage() {
   return (
     <div className="StartPage">
       <Header onClickAvatar={handleClickAvatar} />
-      <Start startThings={startThings} />
+      <Start startThings={startThings} host={host} />
     </div>
   );
 }

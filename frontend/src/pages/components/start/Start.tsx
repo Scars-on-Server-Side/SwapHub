@@ -4,6 +4,7 @@ import React from "react";
 
 function Start(props) {
   const startThings = props.startThings;
+  const host = props.host;
 
 
   return (
@@ -11,7 +12,7 @@ function Start(props) {
       {startThings.map((thing, index) => (
         <StartThing
           key={index}
-          img={thing.image}
+          img={`${host}${thing.images}`}
           name={thing.name}
         />
       ))}
