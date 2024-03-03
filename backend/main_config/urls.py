@@ -20,19 +20,23 @@ from django.urls import path, include
 from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from api.views import (
+from api.main.views import (
     CategoryViewSet,
     ThingViewSet,
-    LocationViewSet,
     UserProfileViewSet,
-    DialogViewSet,
-    MessageViewSet,
     TradeViewSet,
     FeedbackViewSet,
+    ImageViewSet
+)
+from api.chat.views import (
+    DialogViewSet,
+    MessageViewSet,
+)
+from api.loc.views import (
     CountryViewSet,
     RegionViewSet,
     CityViewSet,
-    ImageViewSet
+    LocationViewSet,
 )
 
 

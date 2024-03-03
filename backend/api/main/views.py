@@ -17,26 +17,6 @@ from apps.main.models import (
     Trade,
     Feedback,
 )
-from apps.chat.serializers import (
-    DialogSerializer,
-    MessageSerializer,
-)
-from apps.chat.models import (
-    Dialog,
-    Message,
-)
-from apps.loc.serializers import (
-    LocationSerializer,
-    CountrySerializer,
-    RegionSerializer,
-    CitySerializer,
-)
-from apps.loc.models import (
-    Location,
-    Country,
-    Region,
-    City,
-)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -72,24 +52,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
 
 
-class LocationViewSet(viewsets.ModelViewSet):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-
-
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-
-
-class DialogViewSet(viewsets.ModelViewSet):
-    queryset = Dialog.objects.all()
-    serializer_class = DialogSerializer
-
-
-class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
 
 
 class TradeViewSet(viewsets.ModelViewSet):
@@ -100,18 +65,3 @@ class TradeViewSet(viewsets.ModelViewSet):
 class FeedbackViewSet(viewsets.ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
-
-
-class CountryViewSet(viewsets.ModelViewSet):
-    queryset = Country.objects.all()
-    serializer_class = CountrySerializer
-
-
-class RegionViewSet(viewsets.ModelViewSet):
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
-
-
-class CityViewSet(viewsets.ModelViewSet):
-    queryset = City.objects.all()
-    serializer_class = CitySerializer
