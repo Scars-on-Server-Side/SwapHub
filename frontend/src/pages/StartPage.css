@@ -23,13 +23,19 @@ h1 {
   color: #1F86FF;
 }
 
+.Start {
+  background: rgb(20, 118, 163);
+  padding: 120px 135px 248px 135px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Грид с автоматическим заполнением */
+  gap: 20px; /* Пространство между элементами */
+}
+
 .StartThing {
   position: relative;
-  width: 50%;
 }
 
 .image {
-  display: block;
   width: 100%;
   height: auto;
 }
@@ -39,7 +45,7 @@ h1 {
   bottom: 0;
   left: 100%;
   right: 0;
-  background-color: rgba(112, 112, 112, 0.2);
+  background-color: rgba(112, 112, 112, 0.333);
   overflow: hidden;
   width: 0;
   height: 100%;
