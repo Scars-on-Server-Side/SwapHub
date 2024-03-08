@@ -43,16 +43,21 @@ class Image(models.Model):
         return f"{uuid.uuid4()}.{ext}"
 
     @staticmethod
-    def upload_image(image_type, image, base=""): # owner
+    def upload_image(owner, image_type, image, base=""):
 
         image_name = Image.get_uuid_name_with_extension(image)
-        picture = Image.objects.create(  # http://localhost/media/ub/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png -> http://localhost/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png
-            local_url=image,             # ub/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png -> thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png
-            url_to_upload=Uploader.get_path(  # /swaphub/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png -> http://localhost/media/thing/15/224143e5-bdcf-410e-b162-609bcaa7c18f.png
-                image_type, image_name, base_for_file=base
-            ),  # owner
+
+        picture = Image.objects.create(
+            local_url=image,
+            url_to_upload='localhost'+Uploader.get_path(
+                owner,
+                image_type,
+                image_name,
+                base_for_file=base
+            ),
         )
-        return picture 
+
+        return picture
 
     def delete(self, using=None, keep_parents=False):
         os.remove(self.url_to_upload)
@@ -76,14 +81,12 @@ class Thing(models.Model):
         return self.name
 
     def set_image(self, image):
-        image_instance = Image.upload_image(
-            #owner=self.owner.id,
-            image=image,
+        self.images = Image.upload_image(
+            owner=self.owner.id,
             image_type="thing",
+            image=image,
             base=self.id,
         )
-        self.images = image_instance
-
         self.save()
 
 

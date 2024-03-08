@@ -52,7 +52,6 @@ class ThingViewSet(viewsets.ModelViewSet):
 
         return Response(data)
 
-
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
@@ -76,8 +75,8 @@ class ThingViewSet(viewsets.ModelViewSet):
         return Response(data)
 
     def set_image_from_request(self, thing):
-        image = self.request.data.get("imagess")
-        print(image)
+        image = self.request.data.get("image")
+
         if image is not None:
             thing.set_image(image)
 
