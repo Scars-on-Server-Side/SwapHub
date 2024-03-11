@@ -19,6 +19,7 @@ from django.urls import path, include
 
 from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework_simplejwt import views
 
 from api.main.views import (
     CategoryViewSet,
@@ -61,6 +62,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(router.urls)),
     path("api/v1/drf-auth/", include("rest_framework.urls")),
+     path('api/v1/token/', views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/verify/', views.TokenVerifyView.as_view(), name='token_verify'),
 
     path(
         'api/schema/',

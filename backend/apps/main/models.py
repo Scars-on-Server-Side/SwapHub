@@ -2,8 +2,78 @@ import os
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+import os
+
+from django.conf import settings
+
+MEDIA_ROOT = settings.MEDIA_ROOT
+BASE_DIR = settings.BASE_DIR
+
+
+# Utility class for Images
+class Uploader:
+    @staticmethod
+    def get_or_create_path(name):
+        try:
+            os.mkdir(str(name))
+        except Exception as e:
+            print(e)
+        finally:
+            return str(name)
+
+    @staticmethod
+    def get_path(image_type, filename, base_for_file=""):  #owner
+        os.chdir(MEDIA_ROOT) # from "/swaphub/media" to "/media"
+        
+        if image_type:
+            os.chdir(Uploader.get_or_create_path(image_type))
+        if base_for_file:
+            os.chdir(Uploader.get_or_create_path(base_for_file))
+
+        return os.getcwd() + "/" + filename
+
+
+class Country(models.Model):
+
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Region(models.Model):
+
+    name = models.CharField(max_length=250)
+    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class City(models.Model):
+
+    name = models.CharField(max_length=100)
+    region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Location(models.Model):
+
+    country_id = models.ForeignKey(Country, on_delete=models.CASCADE, default=None)
+
+    # Необходимо, чтобы после выбора страны были доступны только ее регионы
+    region_id = models.ForeignKey(Region, on_delete=models.CASCADE, default=None)
+    # Также и с городами
+    city_id = models.ForeignKey(City, on_delete=models.CASCADE, default=None)
+
+    def __str__(self) -> int:
+        return str(self.country_id.id)
+
 from apps.loc.models import Location
 from utils.image_upload import Uploader, upload_to
+
 
 
 class UserProfile(models.Model):

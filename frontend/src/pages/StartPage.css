@@ -24,8 +24,8 @@ h1 {
 }
 
 .Start {
-  background: rgb(20, 118, 163);
-  padding: 120px 135px 248px 135px;
+  background-image: url("http://localhost:80/media/bg2.png");
+  padding: 100px 135px 248px 135px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Грид с автоматическим заполнением */
   gap: 20px; /* Пространство между элементами */
@@ -36,8 +36,9 @@ h1 {
 }
 
 .image {
-  width: 100%;
+  width: 80%;
   height: auto;
+  cursor: pointer;
 }
 
 .overlay {
@@ -45,7 +46,7 @@ h1 {
   bottom: 0;
   left: 100%;
   right: 0;
-  background-color: rgba(112, 112, 112, 0.333);
+  background-color: rgba(213, 194, 194, 0.785);
   overflow: hidden;
   width: 0;
   height: 100%;
@@ -53,12 +54,12 @@ h1 {
 }
 
 .StartThing:hover .overlay {
-  width: 100%;
+  width:80%;
   left: 0;
 }
 
 .text {
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 20px;
   position: absolute;
   top: 50%;
