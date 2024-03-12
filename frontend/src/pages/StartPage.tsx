@@ -6,9 +6,10 @@ import Start from "./components/start/Start.tsx";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-function StartPage() {
+function StartPage(props) {
   // Define state variables for startThings and things
   const [startThings, setStartThings] = useState([{}]);
+  const accessToken = props.accessToken;
   const host = "http://localhost";
 
   // Function to fetch things data from the API
@@ -17,6 +18,14 @@ function StartPage() {
       .get("http://localhost:80/api/v1/thing/start/", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+          /* Ошибка Auth.tsx + StartPage.tsx
+            {
+              "detail": "Authorization header must contain two space-delimited values",
+              "code": "bad_authorization_header"
+            }
+            Мы получаем токен в ответе, но он или не успевает сохраниться или не передаеться. */
+
         },
       })
       .then((response) => {
@@ -30,7 +39,7 @@ function StartPage() {
   // Fetch things when component mounts
   useEffect(() => {
     fetchStartThings();
-  }, []);
+  });
 
   // Function to handle avatar click
   const handleClickAvatar = () => {
