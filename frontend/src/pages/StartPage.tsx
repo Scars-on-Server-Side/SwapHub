@@ -19,13 +19,6 @@ function StartPage(props) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
-          /* Ошибка Auth.tsx + StartPage.tsx
-            {
-              "detail": "Authorization header must contain two space-delimited values",
-              "code": "bad_authorization_header"
-            }
-            Мы получаем токен в ответе, но он или не успевает сохраниться или не передаеться. */
-
         },
       })
       .then((response) => {
@@ -33,18 +26,20 @@ function StartPage(props) {
       })
       .catch((error) => {
         console.error(error);
+        if (error.response.status === 401) { 
+          props.onUnauthorized()
+        }
       });
   };
 
   // Fetch things when component mounts
   useEffect(() => {
     fetchStartThings();
-  });
+  }, [accessToken]);
 
   // Function to handle avatar click
   const handleClickAvatar = () => {
-    alert("Avatar clicked");
-    console.log(startThings);
+    props.onLogout();
   };
 
   // Render Header and Start components with props
