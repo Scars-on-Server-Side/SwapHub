@@ -8,8 +8,6 @@ import { useState, useEffect } from "react";
 function Auth() {
     const [accessToken, setAccessToken] = useState<string>(localStorage.getItem('accessToken') || '');
     const [refreshToken, setRefreshToken] = useState<string>(localStorage.getItem('accessToken') || '');
-    const [username, setUsername] = useState<string>("admin");
-    const [password, setPassword] = useState<string>("admin");
 
     const login = async (username: string, password: string) => {
         await axios
@@ -20,6 +18,7 @@ function Auth() {
                 setRefreshToken(refresh);
                 localStorage.setItem('accessToken', access);
                 localStorage.setItem('refreshToken', refresh);
+                alert("You logged in successfully!!!");
             })
             .catch((error) => {
                 console.error(error);
@@ -37,7 +36,7 @@ function Auth() {
             .catch((error) => {
                 console.error(error);
                 if (error.response.status === 400) { 
-                    login(username, password)
+                    alert("Register first before login!!!")
                 }
             })
     };
@@ -49,8 +48,7 @@ function Auth() {
         localStorage.removeItem('refreshToken');
     };
 
-    
-
+    const handleLogin = (formData) => { login(formData.username, formData.password); }    
     const handleUnauthorized = () => { refresh(); }
     const handleLogout = () => { logout(); }
 
@@ -59,6 +57,7 @@ function Auth() {
             accessToken={accessToken}
             onUnauthorized={handleUnauthorized}
             onLogout={handleLogout}
+            onLogin={handleLogin}
         />
     )
 }
