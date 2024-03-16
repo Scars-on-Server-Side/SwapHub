@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 
-MEDIA_ROOT = settings.MEDIA_ROOT
+MEDIA_URL = settings.MEDIA_URL
 BASE_DIR = settings.BASE_DIR
 
 
@@ -19,7 +19,7 @@ class Uploader:
 
     @staticmethod
     def get_path(owner, image_type, filename, base_for_file=""):
-        os.chdir(MEDIA_ROOT)
+        os.chdir(MEDIA_URL)
 
         if owner:
             os.chdir(Uploader.get_or_create_path(owner))
@@ -28,8 +28,7 @@ class Uploader:
         if base_for_file:
             os.chdir(Uploader.get_or_create_path(base_for_file))
 
-        # remove project name from url
-        path = os.getcwd().replace('swaphub/', '')
+        path = os.getcwd()
 
         return f'{path}/{filename}'
 

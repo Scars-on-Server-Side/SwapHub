@@ -1,79 +1,12 @@
 import os
 import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
-import os
-
 from django.conf import settings
-
-MEDIA_ROOT = settings.MEDIA_ROOT
-BASE_DIR = settings.BASE_DIR
-
-
-# Utility class for Images
-class Uploader:
-    @staticmethod
-    def get_or_create_path(name):
-        try:
-            os.mkdir(str(name))
-        except Exception as e:
-            print(e)
-        finally:
-            return str(name)
-
-    @staticmethod
-    def get_path(image_type, filename, base_for_file=""):  #owner
-        os.chdir(MEDIA_ROOT) # from "/swaphub/media" to "/media"
-        
-        if image_type:
-            os.chdir(Uploader.get_or_create_path(image_type))
-        if base_for_file:
-            os.chdir(Uploader.get_or_create_path(base_for_file))
-
-        return os.getcwd() + "/" + filename
-
-
-class Country(models.Model):
-
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class Region(models.Model):
-
-    name = models.CharField(max_length=250)
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class City(models.Model):
-
-    name = models.CharField(max_length=100)
-    region_id = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class Location(models.Model):
-
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE, default=None)
-
-    # Необходимо, чтобы после выбора страны были доступны только ее регионы
-    region_id = models.ForeignKey(Region, on_delete=models.CASCADE, default=None)
-    # Также и с городами
-    city_id = models.ForeignKey(City, on_delete=models.CASCADE, default=None)
-
-    def __str__(self) -> int:
-        return str(self.country_id.id)
 
 from apps.loc.models import Location
 from utils.image_upload import Uploader, upload_to
-
 
 
 class UserProfile(models.Model):
@@ -100,40 +33,6 @@ class Category(models.Model):
         return self.name
 
 
-class Image(models.Model):
-    local_url = models.ImageField(upload_to=upload_to, default="")
-    url_to_upload = models.CharField(max_length=200, default="")
-    # created = models.DateTimeField(auto_now_add=True)
-
-    @staticmethod
-    def get_uuid_name_with_extension(image):
-        # Генерируем уникальное имя для изображения с расширением
-        ext = image.name.split(".")[-1]
-
-        return f"{uuid.uuid4()}.{ext}"
-
-    @staticmethod
-    def upload_image(owner, image_type, image, base=""):
-
-        image_name = Image.get_uuid_name_with_extension(image)
-
-        picture = Image.objects.create(
-            local_url=image,
-            url_to_upload='localhost'+Uploader.get_path(
-                owner,
-                image_type,
-                image_name,
-                base_for_file=base
-            ),
-        )
-
-        return picture
-
-    def delete(self, using=None, keep_parents=False):
-        os.remove(self.url_to_upload)
-        super().delete(using=using, keep_parents=keep_parents)
-
-
 class Thing(models.Model):
 
     name = models.CharField(max_length=100)
@@ -145,19 +44,59 @@ class Thing(models.Model):
         blank=True,
     )
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    images = models.ForeignKey(Image, on_delete=models.SET_NULL, null=True)
+    avatar = models.CharField(max_length=300, default="")
 
     def __str__(self):
         return self.name
 
-    def set_image(self, image):
-        self.images = Image.upload_image(
+    def set_image(self, images):
+        Image.upload_image(
             owner=self.owner.id,
             image_type="thing",
-            image=image,
+            thing=self,
+            images=images,
             base=self.id,
         )
+
+    def set_avatar(self):
+        self.avatar = Image.objects.filter(thing__id=self.id).first().url_to_upload
         self.save()
+
+
+class Image(models.Model):
+    local_url = models.ImageField(upload_to=upload_to, default="")
+    url_to_upload = models.CharField(max_length=200, default="")
+    thing = models.ForeignKey(Thing, on_delete=models.SET_NULL, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    @staticmethod
+    def get_uuid_name_with_extension(image):
+        # Генерируем уникальное имя для изображения с расширением
+        extension = image.name.split(".")[-1]
+        return f"{uuid.uuid4()}.{extension}"
+
+    @staticmethod
+    def upload_image(owner, image_type, thing, images, base=""):
+
+        host = settings.ALLOWED_HOSTS[0]
+
+        for image in images:
+            image_name = Image.get_uuid_name_with_extension(image)
+
+            Image.objects.create(
+                local_url=image,
+                url_to_upload=host + Uploader.get_path(
+                    owner,
+                    image_type,
+                    image_name,
+                    base_for_file=base
+                ),
+                thing=thing
+            )
+
+    def delete(self, using=None, keep_parents=False):
+        os.remove(self.url_to_upload)
+        super().delete(using=using, keep_parents=keep_parents)
 
 
 class Trade(models.Model):
