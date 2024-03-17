@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-# from rest_framework.decorators import action
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.main.serializers import (
     CategorySerializer,
@@ -27,6 +27,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ThingViewSet(viewsets.ModelViewSet):
     queryset = Thing.objects.all()
     serializer_class = ThingSerializer
+
+    @action(detail=False, methods=["get"])
+    def start(self, request):
+        # Эндпоинт стартовой страницы, которая отображает последние 6 добавленных вещей
+
+        latest_things = Thing.objects.all().order_by("-id")[:6]
+        serializer = self.get_serializer(latest_things, many=True)
+
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
