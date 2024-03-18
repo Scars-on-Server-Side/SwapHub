@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { relative } from "path";
+
+
 export default function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -46,14 +48,7 @@ export default function Header(props) {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                handleClickAvatar();
-              }}
-            >
-              Login
-            </MenuItem>
+            <MenuItem onClick={() => {handleClickAvatar(); handleClose();}}>Login</MenuItem>
             <MenuItem onClick={handleClose}>Register</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
           </Menu>

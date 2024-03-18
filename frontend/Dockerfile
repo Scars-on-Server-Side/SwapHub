@@ -5,6 +5,7 @@ COPY package*.json ./
 
 RUN npm install
 RUN npm install axios
+RUN npm install @mui/material @emotion/react @emotion/styled @mui/styled-engine-sc styled-components @mui/icons-material
 
 COPY . .
 
